@@ -1,12 +1,18 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, mySocket, Config) {
-  $scope.healthyBack = {
-    status: false,
-    profiles: Config.getProfile()
+.controller('DashCtrl', function($scope, mySocket, HealthyBack) {
+  $scope.healthyBack = HealthyBack
+  //events
+  $scope.changeToProfile = function(profile) {
+    console.log("Change to profile")
+    console.log(profile)
+    $scope.healthyBack.currentProfile = profile
+    mySocket.emit("update profile", profile)
   }
 
-
+  mySocket.on("current profile", function(profile) {
+    $scope.healthyBack.currentProfile = profile
+  });
   mySocket.on("connect", function() {
     $scope.healthyBack.status = true
   });
@@ -14,6 +20,20 @@ angular.module('starter.controllers', [])
   mySocket.on("disconnect", function() {
     $scope.healthyBack.status = false
   });
+
+  mySocket.on('machine status', function(isRunning, isPause) {
+    $scope.healthyBack.isRunning = isRunning
+    $scope.healthyBack.isPause = isPause
+  })
+
+
+
+  setInterval(function() {
+    console.log($scope.healthyBack)
+    console.log(HealthyBack)
+    $scope.$apply()
+  }, 1000)
+
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {

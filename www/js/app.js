@@ -6,17 +6,6 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'btford.socket-io'])
-.factory('mySocket', function (socketFactory) {
-  var myIoSocket = io.connect('http://192.168.200.176:8000');
-
-  mySocket = socketFactory({
-    ioSocket: myIoSocket
-  });
-  mySocket.on('news', function (data) {
-    console.log(data);
-  });
-  return mySocket;
-})
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
