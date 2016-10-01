@@ -1,7 +1,12 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, mySocket, HealthyBack) {
+.controller('DashCtrl', function($scope, mySocket, HealthyBack, Fabric, FabricConstants) {
+
+  $scope.fabric = {}
+  $scope.FabricConstants = FabricConstants
+
   $scope.healthyBack = HealthyBack
+
   //events
   $scope.changeToProfile = function(profile) {
     console.log("Change to profile")
@@ -26,7 +31,20 @@ angular.module('starter.controllers', [])
     $scope.healthyBack.isPause = isPause
   })
 
+  $scope.init = function() {
+    canvasClick = document.getElementById('a');
+    canvas = this.__canvas = new fabric.Canvas('mycanvas', { selection: true });
+    fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
+    rect = new $scope.fabric.Rect({
+      left: 250,
+      top: 295,
+      fill: 'black',
+      width: 80,
+      height: 70
+    });
+    canvas.add(rect);
+  }
 
   setInterval(function() {
     console.log($scope.healthyBack)
